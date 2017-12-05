@@ -26,7 +26,6 @@ namespace AdventOfCode.Solutions
             {
                 canvas[x, y] = sum;
                 (x, y) = GetNextCoordinates(canvas, x, y);
-                PrintCanvas(canvas);
             }
 
             return sum.ToString();
@@ -62,15 +61,6 @@ namespace AdventOfCode.Solutions
             return canvas;
         }
 
-        private void PrintCanvas(int[,] canvas)
-        {
-            Enumerable.Range(0, 30).ToList().ForEach(dx =>
-            {
-                Enumerable.Range(0, 30).ToList().ForEach(dy => Console.Write($"{canvas[dx, dy]}\t"));
-                Console.WriteLine();
-            });
-        }
-
         private int GetAdjacentSum(int[,] canvas, int x, int y)
         {
             return Enumerable.Range(-1, 3).SelectMany(dx => Enumerable.Range(-1, 3).Select(dy => canvas[x + dx, y + dy])).Sum();
@@ -78,17 +68,17 @@ namespace AdventOfCode.Solutions
 
         private (int x, int y) GetNextCoordinates(int[,] canvas, int x, int y)
         {
-            if (canvas[x - 1, y] != 0 && (canvas[x - 1, y - 1] != 0 || canvas[x - 1, y] != 0))
+            if (canvas[x, y + 1] == 0 && canvas[x - 1, y] != 0)
             {
                 return (x, y + 1);
             }
 
-            if(canvas[x-1, y] == 0 && (canvas[x - 1, y - 1] != 0 || canvas[x - 1, y - 1] != 0))
+            if(canvas[x-1, y] == 0 && canvas[x, y - 1] != 0)
             {
                 return (x - 1, y);
             }
 
-            if (canvas[x + 1, y] == 0 && (canvas[x + 1, y + 1] != 0 || canvas[x, y + 1] != 0))
+            if (canvas[x + 1, y] == 0 && canvas[x, y + 1] != 0)
             {
                 return (x + 1, y);
             }
