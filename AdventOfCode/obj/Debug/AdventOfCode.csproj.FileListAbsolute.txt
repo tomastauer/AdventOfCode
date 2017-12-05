@@ -1,0 +1,9 @@
+C:\repos\AdventOfCode\AdventOfCode\bin\Debug\AdventOfCode.exe.config
+C:\repos\AdventOfCode\AdventOfCode\bin\Debug\AdventOfCode.exe
+C:\repos\AdventOfCode\AdventOfCode\bin\Debug\AdventOfCode.pdb
+C:\repos\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csprojResolveAssemblyReference.cache
+C:\repos\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.csproj.CoreCompileInputs.cache
+C:\repos\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.exe
+C:\repos\AdventOfCode\AdventOfCode\obj\Debug\AdventOfCode.pdb
+C:\repos\AdventOfCode\AdventOfCode\bin\Debug\Inputs\Day1.txt
+C:\repos\AdventOfCode\AdventOfCode\bin\Debug\System.ValueTuple.dll
