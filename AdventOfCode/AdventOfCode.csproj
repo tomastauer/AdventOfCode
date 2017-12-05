@@ -45,11 +45,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Inputs\Day3.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="Solutions\Day1.cs" />
     <Compile Include="Solutions\Day2.cs" />
+    <Compile Include="Solutions\Day3.cs" />
     <Compile Include="Solutions\Solution.cs" />
   </ItemGroup>
   <ItemGroup>
