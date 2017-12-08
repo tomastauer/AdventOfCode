@@ -21,7 +21,7 @@ namespace AdventOfCode.Solutions
             var tree = this.BuildTree(input);
             var root = tree.Single(c => c.Value.Parent == null).Value;
 
-
+            throw new NotImplementedException();
         }
 
         private bool TraverseTree(Node input)
@@ -33,6 +33,7 @@ namespace AdventOfCode.Solutions
                     
                 }
             }
+            return false;
         }
 
         private Dictionary<string, Node> BuildTree(string input)
