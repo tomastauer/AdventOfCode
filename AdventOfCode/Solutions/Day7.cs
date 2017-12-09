@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdventOfCode.Solutions
 {
@@ -20,20 +18,34 @@ namespace AdventOfCode.Solutions
         {
             var tree = this.BuildTree(input);
             var root = tree.Single(c => c.Value.Parent == null).Value;
+            while (GetNextUnbalanced(root) != null)
+            {
+                root = GetNextUnbalanced(root);
+            }
+            root = root.Parent;
 
-            throw new NotImplementedException();
+            return (GetUnbalancedNode(root).Weight - GetDifference(root)).ToString();
         }
 
-        private bool TraverseTree(Node input)
+        private Node GetUnbalancedNode(Node root)
         {
-            foreach (var child in input.Children)
-            {
-                if (child.Children.Count > 0)
-                {
-                    
-                }
-            }
-            return false;
+            return root.Children.Single(c => c.TotalWeight != GetMeanNode(root).TotalWeight);
+        }
+
+        private int GetDifference(Node root)
+        {
+            return GetUnbalancedNode(root).TotalWeight - GetMeanNode(root).TotalWeight;
+        }
+
+        private Node GetMeanNode(Node root)
+        {
+            return root.Children.OrderBy(c => c.TotalWeight).ElementAt(1);
+        }
+ 
+        private Node GetNextUnbalanced(Node root)
+        {
+            return root.Children.SingleOrDefault(c =>
+                c.TotalWeight != root.Children.OrderBy(d => d.TotalWeight).ElementAt(1).TotalWeight);
         }
 
         private Dictionary<string, Node> BuildTree(string input)
@@ -109,6 +121,20 @@ namespace AdventOfCode.Solutions
                 return this.Name.GetHashCode();
             }
 
+            private int totalWeight;
+
+            public int TotalWeight
+            {
+                get
+                {
+                    if (totalWeight == 0)
+                    {
+                        totalWeight = Children.Sum(c => c.TotalWeight) + Weight;
+                    }
+                    return totalWeight;
+                }
+            }
+           
             public override string ToString()
             {
                 return this.Name;
