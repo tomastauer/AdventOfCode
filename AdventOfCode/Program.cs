@@ -13,7 +13,7 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
             var runner = new Runner();
-            Console.WriteLine(runner.RunPart2<Day13>());
+            Console.WriteLine(runner.RunPart2<Day14>());
 
 
             Console.ReadLine();
