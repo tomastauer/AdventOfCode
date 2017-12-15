@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdventOfCode
+﻿namespace AdventOfCode
 {
     using System;
     using AdventOfCode.Solutions;
@@ -13,7 +8,7 @@ namespace AdventOfCode
         static void Main(string[] args)
         {
             var runner = new Runner();
-            Console.WriteLine(runner.RunPart2<Day14>());
+            Console.WriteLine(runner.RunPart2<Day15>());
 
 
             Console.ReadLine();
