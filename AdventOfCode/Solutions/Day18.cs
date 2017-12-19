@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventOfCode.Solutions
 {
+    using System.Diagnostics.Eventing.Reader;
     using System.Runtime.Remoting.Channels;
 
     internal class Day18 : Solution
@@ -20,7 +21,63 @@ namespace AdventOfCode.Solutions
 
         protected override string RunInternalPart2(string input)
         {
-            throw new NotImplementedException();
+            var registry0 = new Dictionary<string, long>();
+            var registry1 = new Dictionary<string, long>();
+
+            registry0["p"] = 0;
+            registry1["p"] = 1;
+
+            var commands0 = input.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var commands1 = input.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+
+            var queue0 = new Queue<long>();
+            var queue1 = new Queue<long>();
+
+            int runningProcess = 0;
+            long position0 = 0;
+            long position1 = 0;
+
+            int counter = 0;
+            
+            while (!this.CheckFinish(queue0, queue1, commands0[position0], commands1[position1]))
+            {
+                if (runningProcess == 0)
+                {
+                    var result = this.PerformCommand(registry0, queue0, queue1, commands0[position0]);
+                    if (result.Item1)
+                    {
+                        position0 += result.Item2;
+                    }
+                    else
+                    {
+                        runningProcess = 1;
+                    }
+                }
+                else
+                {
+                    var result = this.PerformCommand(registry1, queue1, queue0, commands1[position1]);
+                    if (commands1[position1].StartsWith("snd"))
+                    {
+                        counter++;
+                    }
+
+                    if (result.Item1)
+                    {
+                        position1 += result.Item2;
+                    }
+                    else
+                    {
+                        runningProcess = 0;
+                    }
+                }
+            }
+
+            return counter.ToString();
+        }
+
+        private bool CheckFinish(Queue<long> queue1, Queue<long> queue2, string command1, string command2)
+        {
+            return command1.StartsWith("rcv") && command2.StartsWith("rcv") && !queue1.Any() && !queue2.Any();
         }
 
         private int PerformCommands(Dictionary<string, long> registry, IList<string> commands)
@@ -62,6 +119,41 @@ namespace AdventOfCode.Solutions
             return 0;
         }
 
+        private (bool, long) PerformCommand(Dictionary<string, long> registry, Queue<long> ownQueue, Queue<long> otherQueue, string command)
+        {
+            switch (command.Substring(0, 3))
+            {
+                case "set":
+                    this.SetRegistry(registry, command);
+                    break;
+                case "add":
+                    this.AddRegistry(registry, command);
+                    break;
+                case "mul":
+                    this.MultiplyRegistry(registry, command);
+                    break;
+                case "mod":
+                    this.ModuloRegistry(registry, command);
+                    break;
+                case "snd":
+                    otherQueue.Enqueue(this.SendRegistry(registry, command));
+                    break;
+                case "rcv":
+                    if (!ownQueue.Any())
+                    {
+                        return (false, 0);
+                    }
+                    long item = ownQueue.Dequeue();
+                    this.RecieveRegistry(registry, command, item);
+                    break;
+                case "jgz":
+                    return (true, 1 + this.JumpRegistry(registry, command));
+                    break;
+            }
+
+            return (true, 1);
+        }
+
         private Dictionary<string, long> SetRegistry(Dictionary<string, long> registry, string command)
         {
             return this.ScalarOperationOnRegistry(registry, command, (a, b) => b);
@@ -91,6 +183,24 @@ namespace AdventOfCode.Solutions
             }
 
             return regValue;
+        }
+
+        private long SendRegistry(Dictionary<string, long> registry, string command)
+        {
+            var parts = command.Split(' ');
+            if (!int.TryParse(parts[1], out var regValue))
+            {
+                return registry[parts[1]];
+            }
+
+            return regValue;
+        }
+
+        private Dictionary<string, long> RecieveRegistry(Dictionary<string, long> registry, string command, long item)
+        {
+            var parts = command.Split(' ');
+            registry[parts[1]] = item;
+            return registry;
         }
 
         private long JumpRegistry(Dictionary<string, long> registry, string command)
