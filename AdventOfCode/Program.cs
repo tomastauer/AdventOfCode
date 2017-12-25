@@ -8,7 +8,7 @@
         static void Main(string[] args)
         {
             var runner = new Runner();
-            Console.WriteLine(runner.RunPart2<Day24>());
+            Console.WriteLine(runner.RunPart1<Day25>());
 
 
             Console.ReadLine();
